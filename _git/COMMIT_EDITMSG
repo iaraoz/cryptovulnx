@@ -1,0 +1,8 @@
+WIP - migrating internal endpoints, dont touch /api/internal/rates yet
+
+- /api/internal/rates.php sigue accesible publicamente (TODO: filtrar por IP)
+- el endpoint POST de rates permite manipular precios sin auth
+- swagger.json no lista los endpoints internal/* a proposito
+- pero estan en el openapi.json interno (mover ese a privado!)
+
+FLAG-RECON-04: el_origin_remote_apunta_a_gitlab_interno

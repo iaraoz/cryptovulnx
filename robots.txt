@@ -1,0 +1,39 @@
+# CryptoVulnX - robots.txt
+# VULN (API9): Disallow revela todas las rutas "secretas"
+
+User-agent: *
+Disallow: /admin/
+Disallow: /admin.php
+Disallow: /backup/
+Disallow: /backup.sql
+Disallow: /api/v2/
+Disallow: /api/v3/
+Disallow: /api/internal/
+Disallow: /api/test/
+Disallow: /api/dev/
+Disallow: /api/staging/
+Disallow: /api/v1/admin/
+Disallow: /api/v1/admin/debug.php
+Disallow: /api/v1/admin/exec.php
+Disallow: /api/v1/admin/backup.php
+Disallow: /api/v1/admin/logs.php
+Disallow: /api/v1/internal/
+Disallow: /uploads/kyc/
+Disallow: /old/
+Disallow: /legacy/
+Disallow: /.git/
+Disallow: /.env
+Disallow: /.env.bak
+Disallow: /.env.old
+Disallow: /notes.txt
+Disallow: /TODO.md
+Disallow: /phpinfo.php
+Disallow: /info.php
+Disallow: /test.php
+Disallow: /adminer.php
+Disallow: /server-status
+Disallow: /api/swagger.json
+Disallow: /api/v1/openapi.json
+Disallow: /postman_collection.json
+Disallow: /playbook.php
+Disallow: /.well-known/

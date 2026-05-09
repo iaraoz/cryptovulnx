@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- VULN (API9): Sitemap revela rutas internas que deberian estar protegidas -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>http://localhost:8080/</loc><priority>1.0</priority></url>
+  <url><loc>http://localhost:8080/index.php</loc></url>
+  <url><loc>http://localhost:8080/dashboard.php</loc></url>
+  <url><loc>http://localhost:8080/wallet.php</loc></url>
+  <url><loc>http://localhost:8080/swap.php</loc></url>
+  <url><loc>http://localhost:8080/kyc.php</loc></url>
+  <url><loc>http://localhost:8080/webhooks.php</loc></url>
+  <url><loc>http://localhost:8080/admin.php</loc></url>
+  <url><loc>http://localhost:8080/old/login.php</loc><changefreq>never</changefreq></url>
+  <url><loc>http://localhost:8080/legacy/index.php</loc><changefreq>never</changefreq></url>
+  <url><loc>http://localhost:8080/api/swagger.json</loc></url>
+  <url><loc>http://localhost:8080/api/v1/openapi.json</loc></url>
+  <url><loc>http://localhost:8080/playbook.php</loc></url>
+</urlset>

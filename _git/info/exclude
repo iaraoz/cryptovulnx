@@ -1,0 +1,11 @@
+# git ls-files --others --exclude-from=.git/info/exclude
+# Lines that start with '#' are comments.
+# Files that should NEVER be committed (pero que estan ahi igual):
+.env
+.env.bak
+.env.old
+notes.txt
+TODO.md
+backup.sql
+backup/
+private_keys.txt

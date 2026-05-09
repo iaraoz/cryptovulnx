@@ -1,0 +1,98 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CryptoVulnX API",
+    "description": "API publica de CryptoVulnX. Esta es la version REDUCIDA (publica). El swagger interno con TODOS los endpoints esta en /api/v1/openapi.json (no listar publicamente).",
+    "version": "1.0.0",
+    "contact": { "email": "api@cryptovulnx.internal" }
+  },
+  "servers": [
+    { "url": "http://localhost:8080/api/v1", "description": "Local dev" },
+    { "url": "https://api.cryptovulnx.com/api/v1", "description": "Production" }
+  ],
+  "x-internal-servers": [
+    { "url": "http://10.0.1.50:8080/api/internal", "description": "Internal microservices network" },
+    { "url": "http://10.0.1.50:8080/api/v1/internal", "description": "Internal aliases" },
+    { "url": "http://localhost:8080/api/v2", "description": "Beta endpoints (NOT for prod)" },
+    { "url": "http://localhost:8080/api/v3", "description": "Experimental (devops only)" },
+    { "url": "http://localhost:8080/api/test", "description": "Testing scripts" },
+    { "url": "http://localhost:8080/api/dev", "description": "Dev sandbox" },
+    { "url": "http://localhost:8080/api/staging", "description": "Staging mirror" }
+  ],
+  "x-flag": "FLAG-INVENT-01: x-internal-servers_lista_todas_las_versiones_ocultas",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Autenticar usuario",
+        "tags": ["auth"],
+        "requestBody": { "required": true },
+        "responses": { "200": {"description": "OK"}, "401": {"description":"Invalid"} }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Registrar usuario",
+        "x-mass-assignable-fields": ["role", "kyc_verified", "kyc_level", "referral_bonus"],
+        "tags": ["auth"]
+      }
+    },
+    "/auth/reset": {
+      "post": { "summary": "Reset password con PIN", "tags": ["auth"] }
+    },
+    "/wallets/balance": {
+      "get": {
+        "summary": "Balance de wallet",
+        "parameters": [
+          { "name": "wallet_id", "in": "query", "schema": {"type":"integer"} },
+          { "name": "debug", "in": "query", "schema": {"type":"integer"}, "x-internal": true, "description": "Si =1, devuelve private_key" },
+          { "name": "include", "in": "query", "schema": {"type":"string"}, "x-internal": true, "description": "Lista de campos extra: private_key,referral_code,*" }
+        ],
+        "tags": ["wallets"]
+      }
+    },
+    "/wallets/transfer": { "post": { "summary": "Transferir fondos", "tags": ["wallets"] } },
+    "/wallets/history": { "get": { "summary": "Historial", "tags": ["wallets"] } },
+    "/crypto/prices": {
+      "get": {
+        "summary": "Precios actuales",
+        "parameters": [
+          { "name": "fields", "in": "query", "schema": {"type":"string"}, "x-internal": true }
+        ],
+        "tags": ["crypto"]
+      }
+    },
+    "/crypto/swap": { "post": { "summary": "Intercambio", "tags": ["crypto"] } },
+    "/crypto/withdraw": { "post": { "summary": "Retiro", "tags": ["crypto"] } },
+    "/kyc/upload": { "post": { "summary": "Subir KYC", "tags": ["kyc"] } },
+    "/kyc/status": { "get": { "summary": "Estado KYC", "tags": ["kyc"] } }
+  },
+  "x-undocumented-endpoints": {
+    "_comment": "Estos endpoints existen pero no se exponen en este swagger publico. Estan documentados en /api/v1/openapi.json (interno).",
+    "endpoints": [
+      "POST /api/v1/admin/users",
+      "GET  /api/v1/admin/transactions",
+      "GET  /api/v1/admin/debug.php",
+      "GET  /api/v1/admin/backup.php",
+      "GET  /api/v1/admin/logs.php?file=",
+      "POST /api/v1/admin/exec.php",
+      "GET  /api/v1/internal/health",
+      "GET  /api/v1/wallets/private-keys.php",
+      "GET  /api/v1/users/export.csv",
+      "GET  /api/v1/.git-rev",
+      "POST /api/v2/auth/login.php",
+      "POST /api/v3/auth/login.php",
+      "POST /api/v3/admin/exec.php",
+      "GET  /api/test/users.php",
+      "GET  /api/dev/dump.php",
+      "POST /api/staging/auth/login.php",
+      "GET  /api/internal/rates.php",
+      "POST /api/internal/rates.php"
+    ]
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" },
+      "internalToken": { "type": "apiKey", "in": "header", "name": "X-Service-Token", "x-static-value": "internal_svc_token_2024_q1" }
+    }
+  }
+}

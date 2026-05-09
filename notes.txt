@@ -1,0 +1,46 @@
+CryptoVulnX - Notas internas del equipo de desarrollo
+=======================================================
+NO BORRAR - Carlos esta usando esto para debugging
+
+Credenciales temporales (cambiar despues de la demo del lunes):
+- mysql root: ""  (sin password en docker)
+- mysql crypto: crypto123
+- admin panel: admin / admin123
+- carlos / carlos2024
+- maria / maria2024
+
+JWT_SECRET actual: crypto123  (lo se, lo se, lo cambio el viernes)
+JWT_SECRET v2 (nuevo deploy beta): beta_secret_v2_temp
+
+Tokens de pruebas que dejamos hardcoded:
+- ADMIN_BYPASS=admin_dev_bypass_v1
+- INTERNAL_SVC=internal_svc_token_2024_q1
+- POSTMAN_TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIn0.c6YH4VfjWcF5O0zG5N4qf2RXxpMzxZGfqKvL-lN7K20
+
+Endpoints que aun no estan en swagger.json publico:
+- /api/v1/admin/exec.php       -> RCE controlado, usar con cuidado
+- /api/v1/admin/backup.php     -> descarga la DB completa
+- /api/v1/admin/logs.php       -> LFI via ?file=
+- /api/v1/internal/health      -> health check con tokens
+- /api/v1/wallets/private-keys.php  -> dump de claves privadas
+- /api/v3/auth/login.php       -> beta-mas-rota, acepta alg=none
+- /api/test/users.php          -> dump usuarios sin auth
+- /api/dev/dump.php            -> idem
+- /api/staging/auth/login.php  -> sin rate limit
+
+Header magic para bypass (NO documentar):
+- X-Debug-Token: 1                     -> habilita modo debug en cualquier endpoint
+- X-Forwarded-For: 127.0.0.1           -> bypass de allowlist en /api/internal/
+- X-Original-URL: /admin               -> rewriting bypass
+- X-Api-Version: internal              -> routing a v interna
+- Cookie: debug_mode=1                 -> verbose responses
+- Cookie: internal_user=admin          -> bypass auth en /api/internal/
+
+Query params no documentados:
+- ?debug=1          -> en cualquier endpoint, devuelve mas info
+- ?include=*        -> en wallets/balance, devuelve private_key
+- ?fields=*         -> dump de columnas
+- ?bypass_rate_limit=1  -> en login
+- ?as_user_id=N     -> impersonar (NO USAR EN PROD)
+
+FLAG-RECON-02: pista_para_fase2_inventory_es_swagger

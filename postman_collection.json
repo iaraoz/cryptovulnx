@@ -1,0 +1,73 @@
+{
+  "info": {
+    "name": "CryptoVulnX - QA Internal Collection",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Coleccion interna de QA. NO COMPARTIR. Tiene tokens hardcoded de admin para no andar logueandose en cada test.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "_flag": "FLAG-INVENT-03: postman_collection_tiene_tokens_admin_hardcoded",
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBjcnlwdG92dWxueC5pbnRlcm5hbCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczODAwMDAwMH0.dGVzdF90b2tlbl9zaWduZWRfd2l0aF9jcnlwdG8xMjM",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "adminToken", "value": "admin_dev_bypass_v1" },
+    { "key": "internalToken", "value": "internal_svc_token_2024_q1" },
+    { "key": "jwtSecret", "value": "crypto123" },
+    { "key": "dbPass", "value": "crypto123" }
+  ],
+  "item": [
+    {
+      "name": "Auth - login (carlos)",
+      "request": { "method": "POST", "url": "{{baseUrl}}/api/v1/auth/login.php" }
+    },
+    {
+      "name": "Auth - login admin (uses hardcoded JWT)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/admin/users.php" }
+    },
+    {
+      "name": "Admin - debug info (no auth needed)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/admin/debug.php?action=info" }
+    },
+    {
+      "name": "Admin - exec command (with X-Admin-Token)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "X-Admin-Token", "value": "{{adminToken}}" }],
+        "url": "{{baseUrl}}/api/v1/admin/exec.php",
+        "body": { "raw": "{\"cmd\":\"whoami\"}" }
+      }
+    },
+    {
+      "name": "Internal - rates (POST con manipulacion)",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/internal/rates.php",
+        "body": { "raw": "{\"rates\":{\"BTC\":1.00}}" }
+      }
+    },
+    {
+      "name": "v3 - login con alg=none",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4ifQ." }],
+        "url": "{{baseUrl}}/api/v3/auth/login.php"
+      }
+    },
+    {
+      "name": "test - users dump (no auth)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/test/users.php" }
+    },
+    {
+      "name": "dev - DB dump (no auth)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/dev/dump.php" }
+    }
+  ]
+}

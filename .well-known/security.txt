@@ -1,0 +1,18 @@
+# CryptoVulnX security.txt
+# https://www.rfc-editor.org/rfc/rfc9116
+Contact: mailto:security@cryptovulnx.internal
+Contact: https://cryptovulnx.internal/security/report
+Expires: 2027-01-01T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://cryptovulnx.internal/.well-known/security.txt
+Policy: https://cryptovulnx.internal/security/policy
+
+# Para pentesters autorizados
+Acknowledgments: https://cryptovulnx.internal/hall-of-fame
+Hiring: https://cryptovulnx.internal/jobs/security
+
+# Endpoints de seguridad (parcial - el resto en /api/swagger.json)
+# Hint: si llegaste aqui via fuzzing, mira tambien /api/v1/openapi.json
+# y /postman_collection.json - tienen mas endpoints documentados.
+
+# FLAG-RECON-08: security_txt_apunta_a_swagger_y_openapi

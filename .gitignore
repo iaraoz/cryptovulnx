@@ -1,0 +1,57 @@
+# .gitignore - CryptoVulnX
+# IMPORTANTE: este lab DEPENDE de tener .env, .env.bak, .git/, notes.txt, TODO.md, etc.
+# en el repo subido para que el alumno los descubra via fuzzing.
+# Solo excluimos archivos REALMENTE sensibles (PII, IDE local, runtime).
+
+# IDE local del autor
+.claude/
+.vscode/
+.idea/
+
+# Archivos temporales del editor
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Imagenes de KYC reales (privacidad - no son PII real, pero por las dudas)
+uploads/kyc/*.JPG
+uploads/kyc/*.jpg
+uploads/kyc/*.png
+uploads/kyc/*.jpeg
+!uploads/kyc/.gitkeep
+
+# Logs de runtime
+*.log
+/logs/
+
+# Excepcion: _git/logs/ es parte del lab (LAB11 RECON)
+!_git/logs/
+!_git/logs/**
+
+# Build / cache
+vendor/
+node_modules/
+
+# NO INCLUIR EN .gitignore (estos archivos VAN al repo a proposito):
+# .env             <- LAB08
+# .env.bak         <- LAB11
+# .env.old         <- LAB11
+# .git/            <- LAB11 (.git/HEAD, config, logs, etc.)
+# .DS_Store        <- LAB11
+# notes.txt        <- LAB11
+# TODO.md          <- LAB11
+# backup.sql       <- LAB11
+# backup/          <- LAB11
+# composer.json    <- LAB11
+# composer.lock    <- LAB11
+# phpinfo.php      <- LAB11
+# info.php         <- LAB11
+# test.php         <- LAB11
+# adminer.php      <- LAB11
+# postman_collection.json <- LAB12
+# api/swagger.json <- LAB12
+# api/v1/openapi.json <- LAB12

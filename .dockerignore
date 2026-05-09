@@ -1,0 +1,37 @@
+# .dockerignore - excluir del build de la imagen Docker
+# IMPORTANTE: NO excluir .env, .env.bak, .env.old, .git/, notes.txt, TODO.md
+# porque son parte intencional del lab (LAB11 RECON)
+
+# IDE / OS local
+.claude
+.vscode
+.idea
+
+# Archivos temporales
+*.swp
+*.swo
+*~
+*.log
+
+# Sistema
+Thumbs.db
+
+# Imagenes KYC reales (privacidad)
+uploads/kyc/*.JPG
+uploads/kyc/*.jpg
+uploads/kyc/*.png
+uploads/kyc/*.jpeg
+!uploads/kyc/.gitkeep
+
+# Documentacion del repo (no necesaria en runtime)
+README.md
+
+# Wordlists docs (no afectan runtime)
+# wordlists/ se incluye porque LAB11-14 los referencia
+
+# Git stuff (NO excluir .git/ - es parte del lab!)
+# .git/   <- INTENCIONALMENTE COMENTADO
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml

@@ -1,0 +1,48 @@
+services:
+  web:
+    build: .
+    container_name: cryptovulnx-web
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: cryptovulnx
+      DB_USER: crypto
+      DB_PASS: crypto123
+      JWT_SECRET: crypto123
+      DEBUG: "true"
+      APP_ENV: development
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - cryptovulnx_net
+
+  db:
+    image: mysql:8.0
+    container_name: cryptovulnx-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cryptovulnx
+      MYSQL_USER: crypto
+      MYSQL_PASSWORD: crypto123
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ucrypto", "-pcrypto123"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - cryptovulnx_net
+
+volumes:
+  db_data:
+
+networks:
+  cryptovulnx_net:
+    driver: bridge

@@ -1,0 +1,66 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "VULN: Versiones fijadas con CVE conocidos - no actualizadas desde 2020"
+    ],
+    "content-hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+    "packages": [
+        {
+            "name": "monolog/monolog",
+            "version": "1.24.0",
+            "_cve_note": "CVE-2018-17436 - permite RCE via deserializacion en handlers"
+        },
+        {
+            "name": "phpmailer/phpmailer",
+            "version": "5.2.27",
+            "_cve_note": "CVE-2016-10033, CVE-2016-10045 - RCE via Sender argument"
+        },
+        {
+            "name": "guzzlehttp/guzzle",
+            "version": "6.3.3",
+            "_cve_note": "CVE-2022-29248 - cookie middleware leak / SSRF posible"
+        },
+        {
+            "name": "phpoffice/phpspreadsheet",
+            "version": "1.16.0",
+            "_cve_note": "CVE-2021-31867 - XXE via XLSX upload"
+        },
+        {
+            "name": "symfony/http-foundation",
+            "version": "4.3.5",
+            "_cve_note": "CVE-2019-18888 - HTTP cache poisoning via session storage"
+        },
+        {
+            "name": "twig/twig",
+            "version": "2.11.3",
+            "_cve_note": "CVE-2022-23614 - SSTI via include/extends de plantillas controladas"
+        },
+        {
+            "name": "swiftmailer/swiftmailer",
+            "version": "5.4.8",
+            "_cve_note": "CVE-2016-10074 - RCE via Sender mail argument"
+        },
+        {
+            "name": "league/flysystem",
+            "version": "1.0.41",
+            "_cve_note": "CVE-2021-32708 - TOCTOU permite escritura arbitraria"
+        },
+        {
+            "name": "firebase/php-jwt",
+            "version": "4.0.0",
+            "_cve_note": "Acepta algoritmo none por defecto en versiones < 5.0"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "phpunit/phpunit",
+            "version": "5.7.27",
+            "_cve_note": "CVE-2017-9841 - RCE via eval-stdin.php expuesto"
+        }
+    ],
+    "platform": {
+        "php": "^7.4"
+    },
+    "platform-dev": []
+}

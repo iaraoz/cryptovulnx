@@ -1,0 +1,136 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CryptoVulnX API - INTERNAL FULL SPEC",
+    "description": "VULN (API9): Spec interno con TODOS los endpoints, expuesto publicamente por error. Incluye schemas con campos sensibles y tokens hardcoded.",
+    "version": "1.0.0-internal"
+  },
+  "x-flag": "FLAG-INVENT-02: openapi_interno_lista_todos_los_endpoints_y_schemas",
+  "servers": [
+    { "url": "http://localhost:8080" }
+  ],
+  "paths": {
+    "/api/v1/auth/login.php": { "post": { "tags": ["auth"], "x-rate-limit": "5/min" } },
+    "/api/v1/auth/register.php": {
+      "post": {
+        "tags": ["auth"],
+        "x-mass-assign-bug": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterRequest" }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/reset.php": { "post": { "tags": ["auth"], "x-debug-pin-leak": true } },
+    "/api/v1/wallets/balance.php": {
+      "get": {
+        "tags": ["wallets"],
+        "x-bola": true,
+        "parameters": [
+          { "name": "wallet_id", "in": "query" },
+          { "name": "debug", "in": "query", "x-hidden": true, "description": "?debug=1 -> dump completo con private_key" },
+          { "name": "include", "in": "query", "x-hidden": true, "description": "?include=private_key,referral_code,* -> over-exposure" },
+          { "name": "as_user_id", "in": "query", "x-hidden": true, "description": "impersonacion (legacy)" }
+        ]
+      }
+    },
+    "/api/v1/wallets/transfer.php": {
+      "post": {
+        "tags": ["wallets"],
+        "x-mass-assign-bug": true,
+        "x-hidden-body-params": ["fee_override", "skip_validation", "as_user_id"]
+      }
+    },
+    "/api/v1/wallets/history.php": { "get": { "tags": ["wallets"], "x-bola": true } },
+    "/api/v1/wallets/private-keys.php": {
+      "get": { "tags": ["wallets", "internal"], "x-undocumented": true, "x-auth-required": false }
+    },
+    "/api/v1/crypto/prices.php": {
+      "get": {
+        "tags": ["crypto"],
+        "parameters": [
+          { "name": "fields", "in": "query", "x-hidden": true, "description": "?fields=* -> dump entero" }
+        ]
+      }
+    },
+    "/api/v1/crypto/swap.php": {
+      "post": {
+        "tags": ["crypto"],
+        "x-hidden-body-params": ["rate_override", "bypass_kyc", "fee_override"]
+      }
+    },
+    "/api/v1/crypto/withdraw.php": { "post": { "tags": ["crypto"] } },
+    "/api/v1/kyc/upload.php": { "post": { "tags": ["kyc"], "x-arbitrary-upload": true } },
+    "/api/v1/kyc/status.php": { "get": { "tags": ["kyc"] } },
+    "/api/v1/admin/users.php": { "get": { "tags": ["admin"], "x-bfla": true } },
+    "/api/v1/admin/transactions.php": { "get": { "tags": ["admin"], "x-bfla": true } },
+    "/api/v1/admin/debug.php": {
+      "get": {
+        "tags": ["admin"],
+        "x-no-auth": true,
+        "parameters": [{"name":"action","in":"query","schema":{"type":"string","enum":["info","users","env","phpinfo"]}}]
+      }
+    },
+    "/api/v1/admin/backup.php": { "get": { "tags": ["admin"], "x-no-auth": true, "description": "Descarga backup completo de DB" } },
+    "/api/v1/admin/logs.php": {
+      "get": {
+        "tags": ["admin"],
+        "parameters": [{"name":"file","in":"query","x-lfi": true, "description": "?file=../../../etc/passwd"}]
+      }
+    },
+    "/api/v1/admin/exec.php": {
+      "post": {
+        "tags": ["admin"],
+        "x-rce": true,
+        "x-auth-bypass-token": "admin_dev_bypass_v1",
+        "description": "Ejecuta comandos. Auth: header X-Admin-Token: admin_dev_bypass_v1 O cookie internal_user=admin"
+      }
+    },
+    "/api/v1/users/export.csv": { "get": { "tags": ["admin", "internal"], "x-no-auth": true } },
+    "/api/v1/internal/health": { "get": { "tags": ["internal"], "x-no-auth": true, "description": "Devuelve tokens y URLs internas" } },
+    "/api/v1/.git-rev": { "get": { "tags": ["internal"], "x-no-auth": true } },
+    "/api/v2/auth/login.php": { "post": { "tags": ["auth", "beta"], "x-no-rate-limit": true } },
+    "/api/v3/auth/login.php": { "post": { "tags": ["auth", "experimental"], "x-jwt-alg-none": true } },
+    "/api/v3/admin/exec.php": { "post": { "tags": ["admin", "experimental"], "x-rce": true, "x-auth-required": false } },
+    "/api/test/users.php": { "get": { "tags": ["test"], "x-no-auth": true } },
+    "/api/dev/dump.php": { "get": { "tags": ["dev"], "x-no-auth": true } },
+    "/api/staging/auth/login.php": { "post": { "tags": ["auth", "staging"], "x-no-rate-limit": true } },
+    "/api/internal/rates.php": {
+      "get": { "tags": ["internal"], "x-no-auth": true },
+      "post": { "tags": ["internal"], "x-no-auth": true, "x-arbitrary-write": true }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "email":    { "type": "string" },
+          "password": { "type": "string" },
+          "role":           { "type": "string", "x-mass-assignable": true, "enum": ["user", "admin"] },
+          "kyc_verified":   { "type": "integer", "x-mass-assignable": true },
+          "kyc_level":      { "type": "integer", "x-mass-assignable": true },
+          "referral_bonus": { "type": "number",  "x-mass-assignable": true },
+          "balance":        { "type": "number",  "x-mass-assignable": true }
+        }
+      }
+    },
+    "x-magic-headers": {
+      "X-Debug-Token": "Si =1 habilita modo debug verbose",
+      "X-Forwarded-For": "Si =127.0.0.1 saltea allowlist de /api/internal/",
+      "X-Original-URL": "URL rewriting (ej: /api/v1/admin/users)",
+      "X-Real-IP": "Idem X-Forwarded-For",
+      "X-Api-Version": "internal -> rutea a v interna",
+      "X-Admin-Token": "admin_dev_bypass_v1 -> bypass auth en exec.php"
+    },
+    "x-magic-cookies": {
+      "debug_mode": "1 -> verbose responses",
+      "internal_user": "admin -> bypass auth en /api/internal/",
+      "feature_flags": "admin_panel,debug -> habilita rutas"
+    }
+  }
+}
