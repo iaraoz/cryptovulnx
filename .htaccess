@@ -4,16 +4,11 @@ RewriteEngine On
 # TODO.md, composer.json, composer.lock, phpinfo.php, info.php, test.php,
 # adminer.php, .DS_Store - todos accesibles (sin reglas que los bloqueen)
 
-# VULN (API8): Listado de directorios habilitado en uploads y backup
-<Directory "uploads">
-    Options +Indexes +FollowSymLinks
-</Directory>
-<Directory "backup">
-    Options +Indexes +FollowSymLinks
-</Directory>
-
-# Por compatibilidad con Apache 2.4+ via Options en .htaccess
-Options +Indexes
+# VULN (API8): Listado de directorios habilitado globalmente
+# (los bloques <Directory> NO se pueden usar en .htaccess; el listing
+#  para uploads/ y backup/ se habilita via Options +Indexes global,
+#  o via .htaccess propios en cada subdirectorio)
+Options +Indexes +FollowSymLinks
 
 # Servir el ".git/" del lab desde "_git/" (truco para evitar colision con git init real al subir a GitHub)
 # Apache hace transparente el rewrite; el alumno ve /.git/HEAD igual que un repo expuesto.
