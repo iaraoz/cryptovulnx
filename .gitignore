@@ -39,6 +39,9 @@ node_modules/
 # Documento generado (se regenera con tools/generate_labs_docx.py)
 CryptoVulnX-Labs-Completo.docx
 
+# Scripts de tooling local del autor (no parte del lab)
+tools/
+
 # NO INCLUIR EN .gitignore (estos archivos VAN al repo a proposito):
 # .env             <- LAB08
 # .env.bak         <- LAB11
